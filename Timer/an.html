@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Countdown Timer</title>
+<style>
+
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  #timer {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  #controls button {
+    margin-right: 10px;
+  }
+</style>
+</head>
+<body>
+<div id="timer">00:00</div>
+<div id="controls">
+  <input type="number" id="countdownTime" placeholder="Enter time in minutes">
+  <button onclick="startTimer()">Start</button>
+  <button onclick="stopTimer()">Stop</button>
+  <button onclick="resetTimer()">Reset</button>
+</div>
+
+<script>
+  let countdownInterval;
+  let timeLeft = 0;
+  let initialTime = 0;
+
+  function startTimer() {
+    const inputTime = parseInt(document.getElementById('countdownTime').value);
+    if (!isNaN(inputTime) && inputTime > 0) {
+      initialTime = inputTime * 60;
+      timeLeft = initialTime;
+      clearInterval(countdownInterval);
+      countdownInterval = setInterval(updateTimer, 1000);
+    } else {
+      alert("Please enter a valid time in minutes.");
+    }
+  }
+
+  function stopTimer() {
+    clearInterval(countdownInterval);
+  }
+
+  function resetTimer() {
+    clearInterval(countdownInterval);
+    timeLeft = initialTime;
+    updateTimer();
+  }
+
+  function updateTimer() {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    document.getElementById('timer').textContent = `${padZero(minutes)}:${padZero(seconds)}`;
+    if (timeLeft === 0) {
+      clearInterval(countdownInterval);
+      alert("Time's up!");
+    } else {
+      timeLeft--;
+    }
+  }
+
+  function padZero(num) {
+    return (num < 10 ? '0' : '') + num;
+  }
+</script>
+</body>
+</html>
